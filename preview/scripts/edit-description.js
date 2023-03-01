@@ -5,17 +5,18 @@ module.exports = async ({inputs, github, context}) => {
     const RTD_PLATFORM = inputs["platform"];
     const RTD_SINGLE_VERSION = inputs["single-version"];
 
-    let RTD_DOMAIN = "";
+    let RTD_PROJECT_DOMAIN = "";
     let RTD_URL = "";
 
     if (RTD_PLATFORM === "community") {
-        RTD_DOMAIN = "org.readthedocs.build";
+        RTD_PROJECT_DOMAIN = `https://${RTD_PROJECT_SLUG}--${PR_NUMBER}.org.readthedocs.build/`;
     } else if (RTD_PLATFORM === "business") {
-        RTD_DOMAIN = "com.readthedocs.build";
+        RTD_PROJECT_DOMAIN = `https://${RTD_PROJECT_SLUG}--${PR_NUMBER}.com.readthedocs.build/`;
+    } else if (RTD_PLATFORM === "netlify") {
+        RTD_PROJECT_DOMAIN = `https://deploy-preview-${PR_NUMBER}--${RTD_PROJECT_SLUG}.netlify.app/`;
     } else {
         // Log warning here?
     }
-    const RTD_PROJECT_DOMAIN = `https://${RTD_PROJECT_SLUG}--${PR_NUMBER}.${RTD_DOMAIN}/`;
 
     if (RTD_SINGLE_VERSION === "true") {
         RTD_URL = RTD_PROJECT_DOMAIN;
